@@ -1,92 +1,76 @@
+let $team1score= document.getElementById("team1-score");
+let $team2score= document.getElementById("team2-score");
+let $team1wickets= document.getElementById("team1-wickets");
+let $team2wickets= document.getElementById("team2-wickets");
+let $team1balls=document.querySelectorAll("#team1-superover>.ball");
+let $team2balls=document.querySelectorAll("#team2-superover>.ball");
 
-let $team1score=document.getElementbyId("team1-score");
-let $team2score=document.getElementbyId("team2-score");
-let $team1wickets=document.getElementbyId("team1-wickets");
-let $team2wickets=document.getElementbyId("team2-wickets");
-let $team1balls=document.querySelectorAll("#team1-superover>ball");
-let $team2balls=document.querySelectorAll("team2-superover>.ball");
-
-
-let possibleoutcomesArr=[0,2,3,4,6,"W"];
-let turn="IND";
+let possibleOutcomeArr=[0,1,2,3,4,6,"w"];
+let turn=1;
 let team1score=0;
 let team2score=0;
 let team1wickets=0;
 let team2wickets=0;
-let ballFacedbyTeam1=0;
-let ballFacedbyTeam2=0;
-let j=0;
-let i=o;
-let strikeAudio=new Audio("");
-let gameoverAudio= new Audio("")
+let ballFacedByTeam1=0;
+let ballFacedByTeam2=0;
+
+let strikeAudio= new Audio("http://bit.ly/so-ball-hit");
+let gameOverAudio= new Audio("http://bit.ly/so-crowd-cheer");
 
 
-function play(){
+function play(){ 
+    strikeAudio.pause();
+    strikeAudio.currentTime=0; 
+    strikeAudio.play();
 
-    let randomNO=Math.random()*possibleoutcomesArr.length;
-    let outcome=possibleoutcomesArr[randomNO];
-
+    let randomNo=Math.floor(Math.random()*possibleOutcomeArr.length);
+    let outcome=possibleOutcomeArr[randomNo];
     if(turn==1){
-
-        ballFacedbyTeam1++;
-        $team1balls[i].innerText=outcome;
-
-        if(outcome=="W"){
+        ballFacedByTeam1++;
+        if(outcome=="w"){
             team1wickets++;
             $team1wickets.textContent=team1wickets;
+            $team1balls[ballFacedByTeam1 - 1].textContent=outcome;
         }
         else{
-            team1score==team1score+outcome;
+            team1score += outcome;
             $team1score.textContent=team1score;
+            $team1balls[ballFacedByTeam1 - 1].textContent=outcome;
         }
-
-        i++;
-
-        if(ballFacedbyTeam1==6 || teamWickets==2){
+        if(ballFacedByTeam1==6 || team1wickets==2){
             turn=2;
         }
     }
-
     else if(turn==2){
-        ballFacedbyTeam2++;
-        $team1balls[j].innerText=outcome;
-
-        if(outcome=="W"){
+        ballFacedByTeam2++;
+        if(outcome=="w"){
             team2wickets++;
             $team2wickets.textContent=team2wickets;
+            $team2balls[ballFacedByTeam2 - 1].textContent=outcome;
         }
         else{
-            team2score==team2score+outcome;
+            team2score += outcome;
             $team2score.textContent=team2score;
+            $team2balls[ballFacedByTeam2 - 1].textContent=outcome;
         }
-
-        j++;
-
-        if(ballFacedbyTeam2==6 || team2Wickets==2 || team2score>){
-            gameOver();
+        if(ballFacedByTeam2==6 || team2wickets==2|| team2score>team1score){
+            gameOver()
         }
-
     }
-
 }
-
-
 function gameOver(){
-
-    if (teamscore>team2score){
-        alert("India wins...!!!")
+    gameOverAudio.play();
+    if(team1score>team2score){
+        alert("India wins..!!! ")
     }
-    else if(team1score<team2score){
+    else if(team2score>team1score){
         alert("Pakistan wins")
     }
     else{
-        alert("Draw")
+        alert("It is a tie!!")
     }
-
-
 }
-
-
 function reset(){
     window.location.reload();
+
 }
